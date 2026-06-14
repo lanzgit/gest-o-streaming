@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 class ApiExceptionHandler {
 
-	@ExceptionHandler(IllegalArgumentException.class)
-	ProblemDetail handleInvalidRequest(IllegalArgumentException exception) {
-		ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
-		problem.setTitle("Invalid request");
-		problem.setDetail(exception.getMessage());
-		return problem;
-	}
+  @ExceptionHandler(IllegalArgumentException.class)
+  ProblemDetail handleInvalidRequest(IllegalArgumentException exception) {
+    ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+    problem.setTitle("Invalid request");
+    problem.setDetail(exception.getMessage());
+    return problem;
+  }
 }

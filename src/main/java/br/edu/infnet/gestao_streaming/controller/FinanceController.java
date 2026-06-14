@@ -12,15 +12,17 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Financeiro", description = "Resumo financeiro das assinaturas do usuario")
 class FinanceController {
 
-	private final FinanceService service;
+  private final FinanceService service;
 
-	FinanceController(FinanceService service) {
-		this.service = service;
-	}
+  FinanceController(FinanceService service) {
+    this.service = service;
+  }
 
-	@GetMapping("/users/{userId}/expenses/summary")
-	@Operation(summary = "Consultar resumo financeiro", description = "Calcula totais mensal e anual das assinaturas ativas do usuario.")
-	ExpenseSummaryResponse summarize(@PathVariable Long userId) {
-		return ExpenseSummaryResponse.from(service.summarize(userId));
-	}
+  @GetMapping("/users/{userId}/expenses/summary")
+  @Operation(
+      summary = "Consultar resumo financeiro",
+      description = "Calcula totais mensal e anual das assinaturas ativas do usuario.")
+  ExpenseSummaryResponse summarize(@PathVariable Long userId) {
+    return ExpenseSummaryResponse.from(service.summarize(userId));
+  }
 }

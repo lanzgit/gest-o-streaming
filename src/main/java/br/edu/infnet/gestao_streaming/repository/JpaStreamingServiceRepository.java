@@ -5,5 +5,4 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 @Profile("!test")
-interface JpaStreamingServiceRepository extends JpaRepository<StreamingService, Long> {
-}
+interface JpaStreamingServiceRepository extends JpaRepository<StreamingService, Long> {}
