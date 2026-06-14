@@ -11,34 +11,33 @@ import jakarta.persistence.Table;
 @Table(name = "streaming_services")
 public class StreamingService {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-	@Column(nullable = false, length = 120)
-	private String name;
+  @Column(nullable = false, length = 120)
+  private String name;
 
-	@Column(nullable = false, length = 80)
-	private String category;
+  @Column(nullable = false, length = 80)
+  private String category;
 
-	protected StreamingService() {
-	}
+  protected StreamingService() {}
 
-	public StreamingService(Long id, String name, String category) {
-		this.id = id;
-		this.name = name;
-		this.category = category;
-	}
+  public StreamingService(Long id, String name, String category) {
+    this.id = id;
+    this.name = name;
+    this.category = category;
+  }
 
-	public Long id() {
-		return id;
-	}
+  public Long id() {
+    return id;
+  }
 
-	public String name() {
-		return name;
-	}
+  public String name() {
+    return name;
+  }
 
-	public String category() {
-		return category;
-	}
+  public String category() {
+    return category;
+  }
 }
