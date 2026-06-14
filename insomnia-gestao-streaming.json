@@ -1,0 +1,198 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-06-14T00:00:00.000Z",
+  "__export_source": "codex",
+  "resources": [
+    {
+      "_id": "wrk_gestao_streaming",
+      "_type": "workspace",
+      "name": "Gestao Streaming MVP",
+      "description": "Requisicoes para testar o MVP da API de Gestao de Assinaturas de Streaming."
+    },
+    {
+      "_id": "env_gestao_streaming_base",
+      "_type": "environment",
+      "parentId": "wrk_gestao_streaming",
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:8080",
+        "user_id": 10,
+        "netflix_service_id": 1,
+        "spotify_service_id": 2
+      }
+    },
+    {
+      "_id": "fld_catalogo",
+      "_type": "request_group",
+      "parentId": "wrk_gestao_streaming",
+      "name": "Catalogo"
+    },
+    {
+      "_id": "fld_assinaturas",
+      "_type": "request_group",
+      "parentId": "wrk_gestao_streaming",
+      "name": "Assinaturas"
+    },
+    {
+      "_id": "fld_financeiro",
+      "_type": "request_group",
+      "parentId": "wrk_gestao_streaming",
+      "name": "Financeiro"
+    },
+    {
+      "_id": "fld_documentacao",
+      "_type": "request_group",
+      "parentId": "wrk_gestao_streaming",
+      "name": "Documentacao"
+    },
+    {
+      "_id": "req_criar_netflix",
+      "_type": "request",
+      "parentId": "fld_catalogo",
+      "name": "Criar servico Netflix",
+      "method": "POST",
+      "url": "{{ _.base_url }}/streaming-services",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Netflix\",\n  \"category\": \"VIDEO\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_criar_spotify",
+      "_type": "request",
+      "parentId": "fld_catalogo",
+      "name": "Criar servico Spotify",
+      "method": "POST",
+      "url": "{{ _.base_url }}/streaming-services",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Spotify\",\n  \"category\": \"MUSIC\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_listar_servicos",
+      "_type": "request",
+      "parentId": "fld_catalogo",
+      "name": "Listar servicos",
+      "method": "GET",
+      "url": "{{ _.base_url }}/streaming-services"
+    },
+    {
+      "_id": "req_criar_assinatura_mensal",
+      "_type": "request",
+      "parentId": "fld_assinaturas",
+      "name": "Criar assinatura mensal",
+      "method": "POST",
+      "url": "{{ _.base_url }}/users/{{ _.user_id }}/subscriptions",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"streamingServiceId\": {{ _.netflix_service_id }},\n  \"amount\": 29.90,\n  \"billingCycle\": \"MENSAL\",\n  \"billingDate\": \"2026-06-20\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_criar_assinatura_anual",
+      "_type": "request",
+      "parentId": "fld_assinaturas",
+      "name": "Criar assinatura anual",
+      "method": "POST",
+      "url": "{{ _.base_url }}/users/{{ _.user_id }}/subscriptions",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"streamingServiceId\": {{ _.spotify_service_id }},\n  \"amount\": 120.00,\n  \"billingCycle\": \"ANUAL\",\n  \"billingDate\": \"2026-07-05\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_listar_assinaturas",
+      "_type": "request",
+      "parentId": "fld_assinaturas",
+      "name": "Listar assinaturas do usuario",
+      "method": "GET",
+      "url": "{{ _.base_url }}/users/{{ _.user_id }}/subscriptions"
+    },
+    {
+      "_id": "req_resumo_financeiro",
+      "_type": "request",
+      "parentId": "fld_financeiro",
+      "name": "Consultar resumo financeiro",
+      "method": "GET",
+      "url": "{{ _.base_url }}/users/{{ _.user_id }}/expenses/summary"
+    },
+    {
+      "_id": "req_openapi_json",
+      "_type": "request",
+      "parentId": "fld_documentacao",
+      "name": "OpenAPI JSON",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v3/api-docs"
+    },
+    {
+      "_id": "req_swagger_ui",
+      "_type": "request",
+      "parentId": "fld_documentacao",
+      "name": "Swagger UI",
+      "method": "GET",
+      "url": "{{ _.base_url }}/swagger-ui/index.html"
+    },
+    {
+      "_id": "req_servico_sem_nome",
+      "_type": "request",
+      "parentId": "fld_catalogo",
+      "name": "Validacao: servico sem nome",
+      "method": "POST",
+      "url": "{{ _.base_url }}/streaming-services",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"\",\n  \"category\": \"VIDEO\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_assinatura_valor_invalido",
+      "_type": "request",
+      "parentId": "fld_assinaturas",
+      "name": "Validacao: assinatura com valor invalido",
+      "method": "POST",
+      "url": "{{ _.base_url }}/users/{{ _.user_id }}/subscriptions",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"streamingServiceId\": {{ _.netflix_service_id }},\n  \"amount\": 0,\n  \"billingCycle\": \"MENSAL\",\n  \"billingDate\": \"2026-06-20\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    }
+  ]
+}
