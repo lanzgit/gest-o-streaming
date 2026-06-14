@@ -1,3 +1,13 @@
 spring:
   application:
     name: gestao-streaming
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/gestao_streaming}
+    username: ${SPRING_DATASOURCE_USERNAME:gestao}
+    password: ${SPRING_DATASOURCE_PASSWORD:gestao}
+  jpa:
+    hibernate:
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:validate}
+    properties:
+      hibernate:
+        format_sql: true

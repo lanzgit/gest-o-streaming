@@ -1,0 +1,34 @@
+package br.edu.infnet.gestao_streaming.service;
+
+import br.edu.infnet.gestao_streaming.model.ExpenseSummary;
+import br.edu.infnet.gestao_streaming.model.Subscription;
+import br.edu.infnet.gestao_streaming.repository.SubscriptionRepository;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.List;
+
+@Service
+public class FinanceService {
+
+	private final SubscriptionRepository subscriptions;
+	private final ExpenseCalculator calculator;
+
+	public FinanceService(SubscriptionRepository subscriptions, ExpenseCalculator calculator) {
+		this.subscriptions = subscriptions;
+		this.calculator = calculator;
+	}
+
+	public ExpenseSummary summarize(Long userId) {
+		List<Subscription> userSubscriptions = subscriptions.findByUserId(userId);
+		return new ExpenseSummary(
+				userId,
+				scale(calculator.monthlyTotal(userSubscriptions)),
+				scale(calculator.annualTotal(userSubscriptions)));
+	}
+
+	private BigDecimal scale(BigDecimal amount) {
+		return amount.setScale(2, RoundingMode.HALF_UP);
+	}
+}
