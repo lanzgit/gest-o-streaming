@@ -19,7 +19,9 @@
         "base_url": "http://localhost:8080",
         "user_id": 10,
         "netflix_service_id": 1,
-        "spotify_service_id": 2
+        "spotify_service_id": 2,
+        "tmdb_region": "BR",
+        "tmdb_provider_id": 8
       }
     },
     {
@@ -39,6 +41,12 @@
       "_type": "request_group",
       "parentId": "wrk_gestao_streaming",
       "name": "Financeiro"
+    },
+    {
+      "_id": "fld_catalogo_externo",
+      "_type": "request_group",
+      "parentId": "wrk_gestao_streaming",
+      "name": "Catalogo externo"
     },
     {
       "_id": "fld_documentacao",
@@ -141,6 +149,22 @@
       "name": "Consultar resumo financeiro",
       "method": "GET",
       "url": "{{ _.base_url }}/users/{{ _.user_id }}/expenses/summary"
+    },
+    {
+      "_id": "req_listar_provedores_tmdb",
+      "_type": "request",
+      "parentId": "fld_catalogo_externo",
+      "name": "TMDB: listar provedores de filmes",
+      "method": "GET",
+      "url": "{{ _.base_url }}/external/tmdb/movie-providers?region={{ _.tmdb_region }}"
+    },
+    {
+      "_id": "req_listar_filmes_por_provedor_tmdb",
+      "_type": "request",
+      "parentId": "fld_catalogo_externo",
+      "name": "TMDB: listar filmes por provedor",
+      "method": "GET",
+      "url": "{{ _.base_url }}/external/tmdb/movie-providers/{{ _.tmdb_provider_id }}/movies?region={{ _.tmdb_region }}"
     },
     {
       "_id": "req_openapi_json",

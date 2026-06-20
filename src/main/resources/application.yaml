@@ -11,3 +11,9 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+tmdb:
+  base-url: ${TMDB_BASE_URL:https://api.themoviedb.org/3}
+  api-token: ${TMDB_API_TOKEN:eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkM2UwYTkwOGRkMDVhMWNmNDQwZDQ1OTM2Y2FjYmY2NSIsIm5iZiI6MTc4MTk1NjM2Ny43OTAwMDAyLCJzdWIiOiI2YTM2N2YwZjc2MWFmOWMwYjFlNmZkNmIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.w_huCVIHcg7YjMJmqvxwz9jSWQDrbZHaxmMNwvBOPfk}
+  default-region: ${TMDB_DEFAULT_REGION:BR}
+  default-language: ${TMDB_DEFAULT_LANGUAGE:pt-BR}

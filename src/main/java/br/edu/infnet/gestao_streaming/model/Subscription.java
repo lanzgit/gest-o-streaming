@@ -10,9 +10,18 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 @Entity
 @Table(name = "subscriptions")
+@Getter
+@Accessors(fluent = true)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Subscription {
 
   @Id
@@ -38,53 +47,6 @@ public class Subscription {
   @Enumerated(EnumType.STRING)
   @Column(nullable = false, length = 20)
   private SubscriptionStatus status;
-
-  protected Subscription() {}
-
-  public Subscription(
-      Long id,
-      Long userId,
-      Long streamingServiceId,
-      BigDecimal amount,
-      BillingCycle billingCycle,
-      LocalDate billingDate,
-      SubscriptionStatus status) {
-    this.id = id;
-    this.userId = userId;
-    this.streamingServiceId = streamingServiceId;
-    this.amount = amount;
-    this.billingCycle = billingCycle;
-    this.billingDate = billingDate;
-    this.status = status;
-  }
-
-  public Long id() {
-    return id;
-  }
-
-  public Long userId() {
-    return userId;
-  }
-
-  public Long streamingServiceId() {
-    return streamingServiceId;
-  }
-
-  public BigDecimal amount() {
-    return amount;
-  }
-
-  public BillingCycle billingCycle() {
-    return billingCycle;
-  }
-
-  public LocalDate billingDate() {
-    return billingDate;
-  }
-
-  public SubscriptionStatus status() {
-    return status;
-  }
 
   public boolean isActive() {
     return status == SubscriptionStatus.ATIVA;

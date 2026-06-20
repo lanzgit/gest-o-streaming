@@ -26,6 +26,9 @@ class OpenApiIntegrationTests {
         .andExpect(jsonPath("$.info.title").value("API de Gestao de Assinaturas de Streaming"))
         .andExpect(jsonPath("$.paths['/streaming-services']").exists())
         .andExpect(jsonPath("$.paths['/users/{userId}/subscriptions']").exists())
-        .andExpect(jsonPath("$.paths['/users/{userId}/expenses/summary']").exists());
+        .andExpect(jsonPath("$.paths['/users/{userId}/expenses/summary']").exists())
+        .andExpect(jsonPath("$.paths['/external/tmdb/movie-providers']").exists())
+        .andExpect(
+            jsonPath("$.paths['/external/tmdb/movie-providers/{providerId}/movies']").exists());
   }
 }

@@ -6,18 +6,15 @@ import br.edu.infnet.gestao_streaming.repository.SubscriptionRepository;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class FinanceService {
 
   private final SubscriptionRepository subscriptions;
   private final ExpenseCalculator calculator;
-
-  public FinanceService(SubscriptionRepository subscriptions, ExpenseCalculator calculator) {
-    this.subscriptions = subscriptions;
-    this.calculator = calculator;
-  }
 
   public ExpenseSummary summarize(Long userId) {
     List<Subscription> userSubscriptions = subscriptions.findByUserId(userId);
