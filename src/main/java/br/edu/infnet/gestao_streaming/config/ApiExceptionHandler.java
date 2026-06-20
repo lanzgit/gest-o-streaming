@@ -15,4 +15,12 @@ class ApiExceptionHandler {
     problem.setDetail(exception.getMessage());
     return problem;
   }
+
+  @ExceptionHandler(IllegalStateException.class)
+  ProblemDetail handleUnavailableDependency(IllegalStateException exception) {
+    ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.SERVICE_UNAVAILABLE);
+    problem.setTitle("External dependency unavailable");
+    problem.setDetail(exception.getMessage());
+    return problem;
+  }
 }

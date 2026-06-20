@@ -6,9 +6,18 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 @Entity
 @Table(name = "streaming_services")
+@Getter
+@Accessors(fluent = true)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class StreamingService {
 
   @Id
@@ -20,24 +29,4 @@ public class StreamingService {
 
   @Column(nullable = false, length = 80)
   private String category;
-
-  protected StreamingService() {}
-
-  public StreamingService(Long id, String name, String category) {
-    this.id = id;
-    this.name = name;
-    this.category = category;
-  }
-
-  public Long id() {
-    return id;
-  }
-
-  public String name() {
-    return name;
-  }
-
-  public String category() {
-    return category;
-  }
 }

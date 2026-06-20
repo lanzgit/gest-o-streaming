@@ -3,16 +3,14 @@ package br.edu.infnet.gestao_streaming.service;
 import br.edu.infnet.gestao_streaming.model.Subscription;
 import java.math.BigDecimal;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class ExpenseCalculator {
 
   private final List<BillingCycleExpenseStrategy> strategies;
-
-  public ExpenseCalculator(List<BillingCycleExpenseStrategy> strategies) {
-    this.strategies = strategies;
-  }
 
   public BigDecimal monthlyTotal(List<Subscription> subscriptions) {
     return subscriptions.stream()

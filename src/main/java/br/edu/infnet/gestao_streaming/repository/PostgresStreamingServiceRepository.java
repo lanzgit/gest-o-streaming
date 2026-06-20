@@ -3,18 +3,17 @@ package br.edu.infnet.gestao_streaming.repository;
 import br.edu.infnet.gestao_streaming.model.StreamingService;
 import java.util.List;
 import java.util.Optional;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @Profile("!test")
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class PostgresStreamingServiceRepository implements StreamingServiceRepository {
 
   private final JpaStreamingServiceRepository jpaRepository;
-
-  PostgresStreamingServiceRepository(JpaStreamingServiceRepository jpaRepository) {
-    this.jpaRepository = jpaRepository;
-  }
 
   @Override
   public StreamingService save(StreamingService streamingService) {

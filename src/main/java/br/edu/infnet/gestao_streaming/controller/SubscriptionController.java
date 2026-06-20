@@ -6,6 +6,8 @@ import br.edu.infnet.gestao_streaming.service.SubscriptionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,13 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Tag(name = "Assinaturas", description = "Assinaturas de streaming vinculadas ao usuario")
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class SubscriptionController {
 
   private final SubscriptionService service;
-
-  SubscriptionController(SubscriptionService service) {
-    this.service = service;
-  }
 
   @PostMapping("/users/{userId}/subscriptions")
   @ResponseStatus(HttpStatus.CREATED)

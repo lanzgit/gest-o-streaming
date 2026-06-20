@@ -5,23 +5,16 @@ import br.edu.infnet.gestao_streaming.model.SubscriptionDraft;
 import br.edu.infnet.gestao_streaming.repository.StreamingServiceRepository;
 import br.edu.infnet.gestao_streaming.repository.SubscriptionRepository;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class SubscriptionService {
 
   private final StreamingServiceRepository streamingServices;
   private final SubscriptionFactory factory;
   private final SubscriptionRepository subscriptions;
-
-  public SubscriptionService(
-      StreamingServiceRepository streamingServices,
-      SubscriptionFactory factory,
-      SubscriptionRepository subscriptions) {
-    this.streamingServices = streamingServices;
-    this.factory = factory;
-    this.subscriptions = subscriptions;
-  }
 
   public Subscription create(CreateSubscriptionCommand command) {
     SubscriptionDraft draft = toDraft(command);

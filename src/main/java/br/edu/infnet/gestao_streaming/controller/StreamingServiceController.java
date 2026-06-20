@@ -6,6 +6,8 @@ import br.edu.infnet.gestao_streaming.service.StreamingServiceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,13 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Tag(name = "Catalogo", description = "Servicos de streaming disponiveis para assinatura")
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class StreamingServiceController {
 
   private final StreamingServiceService service;
-
-  StreamingServiceController(StreamingServiceService service) {
-    this.service = service;
-  }
 
   @PostMapping("/streaming-services")
   @ResponseStatus(HttpStatus.CREATED)

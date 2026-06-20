@@ -15,6 +15,7 @@ class OpenApiConfiguration {
             new Info()
                 .title("API de Gestao de Assinaturas de Streaming")
                 .version("v1")
-                .description("MVP para cadastro de servicos, assinaturas e resumo financeiro."));
+                .description(
+                    "MVP para cadastro de servicos, assinaturas, resumo financeiro e consulta externa ao catalogo TMDB."));
   }
 }
