@@ -49,6 +49,12 @@
       "name": "Catalogo externo"
     },
     {
+      "_id": "fld_cobrancas_notificacoes",
+      "_type": "request_group",
+      "parentId": "wrk_gestao_streaming",
+      "name": "Cobrancas e notificacoes"
+    },
+    {
       "_id": "fld_documentacao",
       "_type": "request_group",
       "parentId": "wrk_gestao_streaming",
@@ -165,6 +171,30 @@
       "name": "TMDB: listar filmes por provedor",
       "method": "GET",
       "url": "{{ _.base_url }}/external/tmdb/movie-providers/{{ _.tmdb_provider_id }}/movies?region={{ _.tmdb_region }}"
+    },
+    {
+      "_id": "req_listar_vencimentos_proximos",
+      "_type": "request",
+      "parentId": "fld_cobrancas_notificacoes",
+      "name": "Listar proximos vencimentos",
+      "method": "GET",
+      "url": "{{ _.base_url }}/users/{{ _.user_id }}/billing/upcoming?days=7"
+    },
+    {
+      "_id": "req_gerar_notificacoes",
+      "_type": "request",
+      "parentId": "fld_cobrancas_notificacoes",
+      "name": "Gerar notificacoes de vencimento",
+      "method": "POST",
+      "url": "{{ _.base_url }}/users/{{ _.user_id }}/notifications/generate?days=7"
+    },
+    {
+      "_id": "req_listar_notificacoes",
+      "_type": "request",
+      "parentId": "fld_cobrancas_notificacoes",
+      "name": "Listar notificacoes",
+      "method": "GET",
+      "url": "{{ _.base_url }}/users/{{ _.user_id }}/notifications"
     },
     {
       "_id": "req_openapi_json",

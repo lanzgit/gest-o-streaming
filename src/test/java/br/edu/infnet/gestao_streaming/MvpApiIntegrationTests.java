@@ -11,12 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class MvpApiIntegrationTests {
 
   @Autowired private MockMvc mockMvc;
@@ -135,5 +137,65 @@ class MvpApiIntegrationTests {
 						}
 						"""))
         .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void userCanGenerateNotificationsForUpcomingBilling() throws Exception {
+    mockMvc
+        .perform(
+            post("/streaming-services")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+						{
+						  "name": "Prime Video",
+						  "category": "VIDEO"
+						}
+						"""))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.id").value(1));
+
+    mockMvc
+        .perform(
+            post("/users/99/subscriptions")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+						{
+						  "streamingServiceId": 1,
+						  "amount": 19.90,
+						  "billingCycle": "MENSAL",
+						  "billingDate": "2026-06-25"
+						}
+						"""))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.id").value(1));
+
+    mockMvc
+        .perform(get("/users/99/billing/upcoming?days=7"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)))
+        .andExpect(jsonPath("$[0].subscriptionId").value(1))
+        .andExpect(jsonPath("$[0].dueDate").value("2026-06-25"))
+        .andExpect(jsonPath("$[0].daysUntilDue").value(5));
+
+    mockMvc
+        .perform(post("/users/99/notifications/generate?days=7"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)))
+        .andExpect(jsonPath("$[0].subscriptionId").value(1))
+        .andExpect(jsonPath("$[0].dueDate").value("2026-06-25"))
+        .andExpect(jsonPath("$[0].status").value("NAO_LIDA"));
+
+    mockMvc
+        .perform(post("/users/99/notifications/generate?days=7"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)))
+        .andExpect(jsonPath("$[0].id").value(1));
+
+    mockMvc
+        .perform(get("/users/99/notifications"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)));
   }
 }
