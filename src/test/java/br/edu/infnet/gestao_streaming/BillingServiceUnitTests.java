@@ -3,10 +3,10 @@ package br.edu.infnet.gestao_streaming;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import br.edu.infnet.gestao_streaming.model.BillingCycle;
-import br.edu.infnet.gestao_streaming.model.Subscription;
-import br.edu.infnet.gestao_streaming.model.SubscriptionStatus;
-import br.edu.infnet.gestao_streaming.model.UpcomingBilling;
+import br.edu.infnet.gestao_streaming.domain.model.BillingCycle;
+import br.edu.infnet.gestao_streaming.domain.model.Subscription;
+import br.edu.infnet.gestao_streaming.domain.model.SubscriptionStatus;
+import br.edu.infnet.gestao_streaming.domain.model.UpcomingBilling;
 import br.edu.infnet.gestao_streaming.repository.SubscriptionRepository;
 import br.edu.infnet.gestao_streaming.service.BillingService;
 import java.math.BigDecimal;

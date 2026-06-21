@@ -1,6 +1,7 @@
 package br.edu.infnet.gestao_streaming.service;
 
-import br.edu.infnet.gestao_streaming.model.Subscription;
+import br.edu.infnet.gestao_streaming.domain.model.Subscription;
+import br.edu.infnet.gestao_streaming.domain.strategy.BillingCycleExpenseStrategy;
 import java.math.BigDecimal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

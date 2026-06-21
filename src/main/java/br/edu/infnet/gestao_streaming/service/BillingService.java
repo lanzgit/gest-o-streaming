@@ -1,8 +1,8 @@
 package br.edu.infnet.gestao_streaming.service;
 
-import br.edu.infnet.gestao_streaming.model.BillingCycle;
-import br.edu.infnet.gestao_streaming.model.Subscription;
-import br.edu.infnet.gestao_streaming.model.UpcomingBilling;
+import br.edu.infnet.gestao_streaming.domain.model.BillingCycle;
+import br.edu.infnet.gestao_streaming.domain.model.Subscription;
+import br.edu.infnet.gestao_streaming.domain.model.UpcomingBilling;
 import br.edu.infnet.gestao_streaming.repository.SubscriptionRepository;
 import java.time.Clock;
 import java.time.LocalDate;

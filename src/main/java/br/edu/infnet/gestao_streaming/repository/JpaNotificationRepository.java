@@ -1,6 +1,6 @@
 package br.edu.infnet.gestao_streaming.repository;
 
-import br.edu.infnet.gestao_streaming.model.Notification;
+import br.edu.infnet.gestao_streaming.domain.model.Notification;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;

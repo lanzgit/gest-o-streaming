@@ -1,6 +1,6 @@
 package br.edu.infnet.gestao_streaming.repository;
 
-import br.edu.infnet.gestao_streaming.model.Subscription;
+import br.edu.infnet.gestao_streaming.domain.model.Subscription;
 import java.util.List;
 import java.util.Optional;
 import lombok.AccessLevel;

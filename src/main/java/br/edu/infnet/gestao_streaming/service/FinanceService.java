@@ -1,7 +1,7 @@
 package br.edu.infnet.gestao_streaming.service;
 
-import br.edu.infnet.gestao_streaming.model.ExpenseSummary;
-import br.edu.infnet.gestao_streaming.model.Subscription;
+import br.edu.infnet.gestao_streaming.domain.model.ExpenseSummary;
+import br.edu.infnet.gestao_streaming.domain.model.Subscription;
 import br.edu.infnet.gestao_streaming.repository.SubscriptionRepository;
 import java.math.BigDecimal;
 import java.math.RoundingMode;

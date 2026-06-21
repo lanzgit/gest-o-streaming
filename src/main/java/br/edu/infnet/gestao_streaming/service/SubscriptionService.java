@@ -1,7 +1,9 @@
 package br.edu.infnet.gestao_streaming.service;
 
-import br.edu.infnet.gestao_streaming.model.Subscription;
-import br.edu.infnet.gestao_streaming.model.SubscriptionDraft;
+import br.edu.infnet.gestao_streaming.domain.command.CreateSubscriptionCommand;
+import br.edu.infnet.gestao_streaming.domain.factory.SubscriptionFactory;
+import br.edu.infnet.gestao_streaming.domain.model.Subscription;
+import br.edu.infnet.gestao_streaming.domain.model.SubscriptionDraft;
 import br.edu.infnet.gestao_streaming.repository.StreamingServiceRepository;
 import br.edu.infnet.gestao_streaming.repository.SubscriptionRepository;
 import java.util.List;

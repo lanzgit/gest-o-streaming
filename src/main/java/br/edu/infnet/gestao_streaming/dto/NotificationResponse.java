@@ -1,7 +1,7 @@
 package br.edu.infnet.gestao_streaming.dto;
 
-import br.edu.infnet.gestao_streaming.model.Notification;
-import br.edu.infnet.gestao_streaming.model.NotificationStatus;
+import br.edu.infnet.gestao_streaming.domain.model.Notification;
+import br.edu.infnet.gestao_streaming.domain.model.NotificationStatus;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 

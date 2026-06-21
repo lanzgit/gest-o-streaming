@@ -1,13 +1,13 @@
-package br.edu.infnet.gestao_streaming.service;
+package br.edu.infnet.gestao_streaming.domain.strategy;
 
-import br.edu.infnet.gestao_streaming.model.BillingCycle;
-import br.edu.infnet.gestao_streaming.model.Subscription;
+import br.edu.infnet.gestao_streaming.domain.model.BillingCycle;
+import br.edu.infnet.gestao_streaming.domain.model.Subscription;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import org.springframework.stereotype.Component;
 
 @Component
-class AnnualExpenseStrategy implements BillingCycleExpenseStrategy {
+public class AnnualExpenseStrategy implements BillingCycleExpenseStrategy {
 
   @Override
   public boolean supports(BillingCycle billingCycle) {

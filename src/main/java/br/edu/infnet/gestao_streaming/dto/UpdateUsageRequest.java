@@ -1,7 +1,7 @@
 package br.edu.infnet.gestao_streaming.dto;
 
-import br.edu.infnet.gestao_streaming.model.UsageLevel;
-import br.edu.infnet.gestao_streaming.service.UpdateUsageCommand;
+import br.edu.infnet.gestao_streaming.domain.command.UpdateUsageCommand;
+import br.edu.infnet.gestao_streaming.domain.model.UsageLevel;
 
 public record UpdateUsageRequest(UsageLevel level) {
 
