@@ -32,6 +32,19 @@ CREATE TABLE IF NOT EXISTS notifications (
         UNIQUE (subscription_id, due_date)
 );
 
+CREATE TABLE IF NOT EXISTS payments (
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    subscription_id BIGINT NOT NULL,
+    amount NUMERIC(10, 2) NOT NULL,
+    paid_at DATE NOT NULL,
+    status VARCHAR(20) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    CONSTRAINT fk_payments_subscription
+        FOREIGN KEY (subscription_id)
+        REFERENCES subscriptions (id)
+);
+
 INSERT INTO streaming_services (id, name, category) VALUES
     (1, 'Netflix', 'VIDEO'),
     (2, 'Spotify', 'MUSIC'),
@@ -71,4 +84,9 @@ SELECT setval(
 SELECT setval(
     pg_get_serial_sequence('notifications', 'id'),
     COALESCE((SELECT MAX(id) FROM notifications), 1)
+);
+
+SELECT setval(
+    pg_get_serial_sequence('payments', 'id'),
+    COALESCE((SELECT MAX(id) FROM payments), 1)
 );

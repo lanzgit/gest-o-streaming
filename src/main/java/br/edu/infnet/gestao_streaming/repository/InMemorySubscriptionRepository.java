@@ -3,6 +3,7 @@ package br.edu.infnet.gestao_streaming.repository;
 import br.edu.infnet.gestao_streaming.model.Subscription;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.context.annotation.Profile;
@@ -38,6 +39,11 @@ class InMemorySubscriptionRepository implements SubscriptionRepository {
         .filter(subscription -> subscription.userId().equals(userId))
         .sorted(Comparator.comparing(Subscription::id))
         .toList();
+  }
+
+  @Override
+  public Optional<Subscription> findById(Long id) {
+    return Optional.ofNullable(subscriptions.get(id));
   }
 
   private Long nextId(Subscription subscription) {

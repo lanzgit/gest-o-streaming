@@ -198,4 +198,112 @@ class MvpApiIntegrationTests {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)));
   }
+
+  @Test
+  void userCanRegisterAndListSubscriptionPayments() throws Exception {
+    mockMvc
+        .perform(
+            post("/streaming-services")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+						{
+						  "name": "Netflix",
+						  "category": "VIDEO"
+						}
+						"""))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.id").value(1));
+
+    mockMvc
+        .perform(
+            post("/users/77/subscriptions")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+						{
+						  "streamingServiceId": 1,
+						  "amount": 29.90,
+						  "billingCycle": "MENSAL",
+						  "billingDate": "2026-06-20"
+						}
+						"""))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.id").value(1));
+
+    mockMvc
+        .perform(
+            post("/users/77/subscriptions/1/payments")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+						{
+						  "amount": 29.90,
+						  "paidAt": "2026-06-20"
+						}
+						"""))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.id").value(1))
+        .andExpect(jsonPath("$.userId").value(77))
+        .andExpect(jsonPath("$.subscriptionId").value(1))
+        .andExpect(jsonPath("$.amount").value(29.90))
+        .andExpect(jsonPath("$.paidAt").value("2026-06-20"))
+        .andExpect(jsonPath("$.status").value("CONFIRMADO"));
+
+    mockMvc
+        .perform(get("/users/77/payments"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)))
+        .andExpect(jsonPath("$[0].subscriptionId").value(1));
+
+    mockMvc
+        .perform(get("/users/77/subscriptions/1/payments"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)))
+        .andExpect(jsonPath("$[0].id").value(1));
+  }
+
+  @Test
+  void paymentAmountMustBePositive() throws Exception {
+    mockMvc
+        .perform(
+            post("/streaming-services")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+						{
+						  "name": "Netflix",
+						  "category": "VIDEO"
+						}
+						"""))
+        .andExpect(status().isCreated());
+
+    mockMvc
+        .perform(
+            post("/users/77/subscriptions")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+						{
+						  "streamingServiceId": 1,
+						  "amount": 29.90,
+						  "billingCycle": "MENSAL",
+						  "billingDate": "2026-06-20"
+						}
+						"""))
+        .andExpect(status().isCreated());
+
+    mockMvc
+        .perform(
+            post("/users/77/subscriptions/1/payments")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+						{
+						  "amount": 0,
+						  "paidAt": "2026-06-20"
+						}
+						"""))
+        .andExpect(status().isBadRequest());
+  }
 }

@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 class BillingServiceUnitTests {
@@ -72,6 +73,13 @@ class BillingServiceUnitTests {
       return subscriptions.stream()
           .filter(subscription -> subscription.userId().equals(userId))
           .toList();
+    }
+
+    @Override
+    public Optional<Subscription> findById(Long id) {
+      return subscriptions.stream()
+          .filter(subscription -> subscription.id().equals(id))
+          .findFirst();
     }
   }
 }

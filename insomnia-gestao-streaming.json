@@ -19,6 +19,7 @@
         "base_url": "http://localhost:8080",
         "user_id": 10,
         "netflix_service_id": 1,
+        "netflix_subscription_id": 1,
         "spotify_service_id": 2,
         "tmdb_region": "BR",
         "tmdb_provider_id": 8
@@ -53,6 +54,12 @@
       "_type": "request_group",
       "parentId": "wrk_gestao_streaming",
       "name": "Cobrancas e notificacoes"
+    },
+    {
+      "_id": "fld_pagamentos",
+      "_type": "request_group",
+      "parentId": "wrk_gestao_streaming",
+      "name": "Pagamentos"
     },
     {
       "_id": "fld_documentacao",
@@ -195,6 +202,40 @@
       "name": "Listar notificacoes",
       "method": "GET",
       "url": "{{ _.base_url }}/users/{{ _.user_id }}/notifications"
+    },
+    {
+      "_id": "req_registrar_pagamento",
+      "_type": "request",
+      "parentId": "fld_pagamentos",
+      "name": "Registrar pagamento da assinatura",
+      "method": "POST",
+      "url": "{{ _.base_url }}/users/{{ _.user_id }}/subscriptions/{{ _.netflix_subscription_id }}/payments",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"amount\": 29.90,\n  \"paidAt\": \"2026-06-20\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_listar_pagamentos_usuario",
+      "_type": "request",
+      "parentId": "fld_pagamentos",
+      "name": "Listar pagamentos do usuario",
+      "method": "GET",
+      "url": "{{ _.base_url }}/users/{{ _.user_id }}/payments"
+    },
+    {
+      "_id": "req_listar_pagamentos_assinatura",
+      "_type": "request",
+      "parentId": "fld_pagamentos",
+      "name": "Listar pagamentos da assinatura",
+      "method": "GET",
+      "url": "{{ _.base_url }}/users/{{ _.user_id }}/subscriptions/{{ _.netflix_subscription_id }}/payments"
     },
     {
       "_id": "req_openapi_json",
