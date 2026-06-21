@@ -1,7 +1,7 @@
 package br.edu.infnet.gestao_streaming.dto;
 
-import br.edu.infnet.gestao_streaming.model.Usage;
-import br.edu.infnet.gestao_streaming.model.UsageLevel;
+import br.edu.infnet.gestao_streaming.domain.model.Usage;
+import br.edu.infnet.gestao_streaming.domain.model.UsageLevel;
 import java.time.LocalDateTime;
 
 public record UsageResponse(

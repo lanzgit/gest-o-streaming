@@ -1,6 +1,6 @@
 package br.edu.infnet.gestao_streaming.dto;
 
-import br.edu.infnet.gestao_streaming.model.UsageSummary;
+import br.edu.infnet.gestao_streaming.domain.model.UsageSummary;
 
 public record UsageSummaryResponse(long frequentCount, long rareCount, long notUsedCount) {
 

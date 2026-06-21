@@ -1,7 +1,7 @@
-package br.edu.infnet.gestao_streaming.service;
+package br.edu.infnet.gestao_streaming.domain.strategy;
 
-import br.edu.infnet.gestao_streaming.model.BillingCycle;
-import br.edu.infnet.gestao_streaming.model.Subscription;
+import br.edu.infnet.gestao_streaming.domain.model.BillingCycle;
+import br.edu.infnet.gestao_streaming.domain.model.Subscription;
 import java.math.BigDecimal;
 
 public interface BillingCycleExpenseStrategy {

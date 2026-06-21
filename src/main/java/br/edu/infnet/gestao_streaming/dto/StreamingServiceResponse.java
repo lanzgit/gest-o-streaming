@@ -1,6 +1,6 @@
 package br.edu.infnet.gestao_streaming.dto;
 
-import br.edu.infnet.gestao_streaming.model.StreamingService;
+import br.edu.infnet.gestao_streaming.domain.model.StreamingService;
 
 public record StreamingServiceResponse(Long id, String name, String category) {
 

@@ -1,4 +1,4 @@
-package br.edu.infnet.gestao_streaming.model;
+package br.edu.infnet.gestao_streaming.domain.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,6 +8,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -16,12 +18,12 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 @Entity
-@Table(name = "subscription_usage")
+@Table(name = "payments")
 @Getter
 @Accessors(fluent = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Usage {
+public class Payment {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,10 +35,16 @@ public class Usage {
   @Column(nullable = false)
   private Long subscriptionId;
 
-  @Enumerated(EnumType.STRING)
-  @Column(nullable = false, length = 20)
-  private UsageLevel level;
+  @Column(nullable = false, precision = 10, scale = 2)
+  private BigDecimal amount;
 
   @Column(nullable = false)
-  private LocalDateTime updatedAt;
+  private LocalDate paidAt;
+
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false, length = 20)
+  private PaymentStatus status;
+
+  @Column(nullable = false)
+  private LocalDateTime createdAt;
 }

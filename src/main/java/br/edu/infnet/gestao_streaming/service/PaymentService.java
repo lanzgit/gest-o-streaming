@@ -1,8 +1,9 @@
 package br.edu.infnet.gestao_streaming.service;
 
-import br.edu.infnet.gestao_streaming.model.Payment;
-import br.edu.infnet.gestao_streaming.model.PaymentStatus;
-import br.edu.infnet.gestao_streaming.model.Subscription;
+import br.edu.infnet.gestao_streaming.domain.command.RegisterPaymentCommand;
+import br.edu.infnet.gestao_streaming.domain.model.Payment;
+import br.edu.infnet.gestao_streaming.domain.model.PaymentStatus;
+import br.edu.infnet.gestao_streaming.domain.model.Subscription;
 import br.edu.infnet.gestao_streaming.repository.PaymentRepository;
 import br.edu.infnet.gestao_streaming.repository.SubscriptionRepository;
 import java.time.Clock;

@@ -1,6 +1,6 @@
 package br.edu.infnet.gestao_streaming.repository;
 
-import br.edu.infnet.gestao_streaming.model.Payment;
+import br.edu.infnet.gestao_streaming.domain.model.Payment;
 import java.util.List;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;

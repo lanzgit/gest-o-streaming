@@ -1,8 +1,8 @@
 package br.edu.infnet.gestao_streaming.dto;
 
-import br.edu.infnet.gestao_streaming.model.BillingCycle;
-import br.edu.infnet.gestao_streaming.model.Subscription;
-import br.edu.infnet.gestao_streaming.model.SubscriptionStatus;
+import br.edu.infnet.gestao_streaming.domain.model.BillingCycle;
+import br.edu.infnet.gestao_streaming.domain.model.Subscription;
+import br.edu.infnet.gestao_streaming.domain.model.SubscriptionStatus;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 

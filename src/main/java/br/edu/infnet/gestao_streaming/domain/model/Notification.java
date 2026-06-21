@@ -1,4 +1,4 @@
-package br.edu.infnet.gestao_streaming.model;
+package br.edu.infnet.gestao_streaming.domain.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

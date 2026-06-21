@@ -1,7 +1,7 @@
 package br.edu.infnet.gestao_streaming.dto;
 
-import br.edu.infnet.gestao_streaming.model.PaymentStatus;
-import br.edu.infnet.gestao_streaming.service.RegisterPaymentCommand;
+import br.edu.infnet.gestao_streaming.domain.command.RegisterPaymentCommand;
+import br.edu.infnet.gestao_streaming.domain.model.PaymentStatus;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 

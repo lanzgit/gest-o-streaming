@@ -1,8 +1,8 @@
 package br.edu.infnet.gestao_streaming.service;
 
-import br.edu.infnet.gestao_streaming.model.Notification;
-import br.edu.infnet.gestao_streaming.model.NotificationStatus;
-import br.edu.infnet.gestao_streaming.model.UpcomingBilling;
+import br.edu.infnet.gestao_streaming.domain.model.Notification;
+import br.edu.infnet.gestao_streaming.domain.model.NotificationStatus;
+import br.edu.infnet.gestao_streaming.domain.model.UpcomingBilling;
 import br.edu.infnet.gestao_streaming.repository.NotificationRepository;
 import java.time.Clock;
 import java.time.LocalDateTime;

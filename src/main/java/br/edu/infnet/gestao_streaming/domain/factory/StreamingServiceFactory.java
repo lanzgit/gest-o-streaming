@@ -1,6 +1,6 @@
-package br.edu.infnet.gestao_streaming.service;
+package br.edu.infnet.gestao_streaming.domain.factory;
 
-import br.edu.infnet.gestao_streaming.model.StreamingService;
+import br.edu.infnet.gestao_streaming.domain.model.StreamingService;
 import org.springframework.stereotype.Component;
 
 @Component

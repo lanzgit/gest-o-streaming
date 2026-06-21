@@ -1,4 +1,4 @@
-package br.edu.infnet.gestao_streaming.model;
+package br.edu.infnet.gestao_streaming.domain.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

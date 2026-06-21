@@ -1,10 +1,9 @@
-package br.edu.infnet.gestao_streaming.service;
+package br.edu.infnet.gestao_streaming.domain.model;
 
-import br.edu.infnet.gestao_streaming.model.BillingCycle;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public record CreateSubscriptionCommand(
+public record SubscriptionDraft(
     Long userId,
     Long streamingServiceId,
     BigDecimal amount,

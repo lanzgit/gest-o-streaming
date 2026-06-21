@@ -2,9 +2,11 @@ package br.edu.infnet.gestao_streaming.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import br.edu.infnet.gestao_streaming.model.BillingCycle;
-import br.edu.infnet.gestao_streaming.model.Subscription;
-import br.edu.infnet.gestao_streaming.model.SubscriptionStatus;
+import br.edu.infnet.gestao_streaming.domain.model.BillingCycle;
+import br.edu.infnet.gestao_streaming.domain.model.Subscription;
+import br.edu.infnet.gestao_streaming.domain.model.SubscriptionStatus;
+import br.edu.infnet.gestao_streaming.domain.strategy.AnnualExpenseStrategy;
+import br.edu.infnet.gestao_streaming.domain.strategy.MonthlyExpenseStrategy;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;

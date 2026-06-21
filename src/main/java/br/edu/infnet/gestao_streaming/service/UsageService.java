@@ -1,9 +1,10 @@
 package br.edu.infnet.gestao_streaming.service;
 
-import br.edu.infnet.gestao_streaming.model.Subscription;
-import br.edu.infnet.gestao_streaming.model.Usage;
-import br.edu.infnet.gestao_streaming.model.UsageLevel;
-import br.edu.infnet.gestao_streaming.model.UsageSummary;
+import br.edu.infnet.gestao_streaming.domain.command.UpdateUsageCommand;
+import br.edu.infnet.gestao_streaming.domain.model.Subscription;
+import br.edu.infnet.gestao_streaming.domain.model.Usage;
+import br.edu.infnet.gestao_streaming.domain.model.UsageLevel;
+import br.edu.infnet.gestao_streaming.domain.model.UsageSummary;
 import br.edu.infnet.gestao_streaming.repository.SubscriptionRepository;
 import br.edu.infnet.gestao_streaming.repository.UsageRepository;
 import java.time.Clock;

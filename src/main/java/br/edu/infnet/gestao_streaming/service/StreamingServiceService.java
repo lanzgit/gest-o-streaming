@@ -1,6 +1,8 @@
 package br.edu.infnet.gestao_streaming.service;
 
-import br.edu.infnet.gestao_streaming.model.StreamingService;
+import br.edu.infnet.gestao_streaming.domain.command.CreateStreamingServiceCommand;
+import br.edu.infnet.gestao_streaming.domain.factory.StreamingServiceFactory;
+import br.edu.infnet.gestao_streaming.domain.model.StreamingService;
 import br.edu.infnet.gestao_streaming.repository.StreamingServiceRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
