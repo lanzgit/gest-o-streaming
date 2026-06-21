@@ -62,6 +62,12 @@
       "name": "Pagamentos"
     },
     {
+      "_id": "fld_uso",
+      "_type": "request_group",
+      "parentId": "wrk_gestao_streaming",
+      "name": "Uso"
+    },
+    {
       "_id": "fld_documentacao",
       "_type": "request_group",
       "parentId": "wrk_gestao_streaming",
@@ -236,6 +242,48 @@
       "name": "Listar pagamentos da assinatura",
       "method": "GET",
       "url": "{{ _.base_url }}/users/{{ _.user_id }}/subscriptions/{{ _.netflix_subscription_id }}/payments"
+    },
+    {
+      "_id": "req_classificar_uso_assinatura",
+      "_type": "request",
+      "parentId": "fld_uso",
+      "name": "Classificar uso da assinatura",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/users/{{ _.user_id }}/subscriptions/{{ _.netflix_subscription_id }}/usage",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"level\": \"RARO\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_listar_uso_assinaturas",
+      "_type": "request",
+      "parentId": "fld_uso",
+      "name": "Listar uso das assinaturas",
+      "method": "GET",
+      "url": "{{ _.base_url }}/users/{{ _.user_id }}/subscriptions/usage"
+    },
+    {
+      "_id": "req_listar_baixo_uso",
+      "_type": "request",
+      "parentId": "fld_uso",
+      "name": "Listar assinaturas pouco usadas",
+      "method": "GET",
+      "url": "{{ _.base_url }}/users/{{ _.user_id }}/subscriptions/usage/low"
+    },
+    {
+      "_id": "req_resumo_uso",
+      "_type": "request",
+      "parentId": "fld_uso",
+      "name": "Resumo de uso",
+      "method": "GET",
+      "url": "{{ _.base_url }}/users/{{ _.user_id }}/subscriptions/usage-summary"
     },
     {
       "_id": "req_openapi_json",
