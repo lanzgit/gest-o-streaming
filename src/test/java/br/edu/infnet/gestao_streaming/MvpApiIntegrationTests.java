@@ -2,6 +2,7 @@ package br.edu.infnet.gestao_streaming;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -302,6 +303,168 @@ class MvpApiIntegrationTests {
 						{
 						  "amount": 0,
 						  "paidAt": "2026-06-20"
+						}
+						"""))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void userCanClassifyAndSummarizeSubscriptionUsage() throws Exception {
+    mockMvc
+        .perform(
+            post("/streaming-services")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+						{
+						  "name": "Netflix",
+						  "category": "VIDEO"
+						}
+						"""))
+        .andExpect(status().isCreated());
+
+    mockMvc
+        .perform(
+            post("/streaming-services")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+						{
+						  "name": "Spotify",
+						  "category": "MUSIC"
+						}
+						"""))
+        .andExpect(status().isCreated());
+
+    mockMvc
+        .perform(
+            post("/users/88/subscriptions")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+						{
+						  "streamingServiceId": 1,
+						  "amount": 29.90,
+						  "billingCycle": "MENSAL",
+						  "billingDate": "2026-06-20"
+						}
+						"""))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.id").value(1));
+
+    mockMvc
+        .perform(
+            post("/users/88/subscriptions")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+						{
+						  "streamingServiceId": 2,
+						  "amount": 120.00,
+						  "billingCycle": "ANUAL",
+						  "billingDate": "2026-07-05"
+						}
+						"""))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.id").value(2));
+
+    mockMvc
+        .perform(
+            patch("/users/88/subscriptions/1/usage")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+						{
+						  "level": "RARO"
+						}
+						"""))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.subscriptionId").value(1))
+        .andExpect(jsonPath("$.level").value("RARO"));
+
+    mockMvc
+        .perform(
+            patch("/users/88/subscriptions/2/usage")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+						{
+						  "level": "FREQUENTE"
+						}
+						"""))
+        .andExpect(status().isOk());
+
+    mockMvc
+        .perform(
+            patch("/users/88/subscriptions/1/usage")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+						{
+						  "level": "NAO_USADO"
+						}
+						"""))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id").value(1))
+        .andExpect(jsonPath("$.level").value("NAO_USADO"));
+
+    mockMvc
+        .perform(get("/users/88/subscriptions/usage"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(2)));
+
+    mockMvc
+        .perform(get("/users/88/subscriptions/usage/low"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)))
+        .andExpect(jsonPath("$[0].subscriptionId").value(1));
+
+    mockMvc
+        .perform(get("/users/88/subscriptions/usage-summary"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.frequentCount").value(1))
+        .andExpect(jsonPath("$.rareCount").value(0))
+        .andExpect(jsonPath("$.notUsedCount").value(1));
+  }
+
+  @Test
+  void usageLevelIsRequired() throws Exception {
+    mockMvc
+        .perform(
+            post("/streaming-services")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+						{
+						  "name": "Netflix",
+						  "category": "VIDEO"
+						}
+						"""))
+        .andExpect(status().isCreated());
+
+    mockMvc
+        .perform(
+            post("/users/88/subscriptions")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+						{
+						  "streamingServiceId": 1,
+						  "amount": 29.90,
+						  "billingCycle": "MENSAL",
+						  "billingDate": "2026-06-20"
+						}
+						"""))
+        .andExpect(status().isCreated());
+
+    mockMvc
+        .perform(
+            patch("/users/88/subscriptions/1/usage")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+						{
+						  "level": null
 						}
 						"""))
         .andExpect(status().isBadRequest());

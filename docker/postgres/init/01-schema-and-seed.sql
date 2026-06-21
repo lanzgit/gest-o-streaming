@@ -45,6 +45,19 @@ CREATE TABLE IF NOT EXISTS payments (
         REFERENCES subscriptions (id)
 );
 
+CREATE TABLE IF NOT EXISTS subscription_usage (
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    subscription_id BIGINT NOT NULL,
+    level VARCHAR(20) NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
+    CONSTRAINT fk_subscription_usage_subscription
+        FOREIGN KEY (subscription_id)
+        REFERENCES subscriptions (id),
+    CONSTRAINT uk_subscription_usage_user_subscription
+        UNIQUE (user_id, subscription_id)
+);
+
 INSERT INTO streaming_services (id, name, category) VALUES
     (1, 'Netflix', 'VIDEO'),
     (2, 'Spotify', 'MUSIC'),
@@ -71,6 +84,14 @@ INSERT INTO subscriptions (
     (6, 30, 6, 14.99, 'MENSAL', '2026-06-25', 'CANCELADA')
 ON CONFLICT (id) DO NOTHING;
 
+INSERT INTO subscription_usage (id, user_id, subscription_id, level, updated_at) VALUES
+    (1, 10, 1, 'FREQUENTE', '2026-06-20 10:00:00'),
+    (2, 10, 2, 'RARO', '2026-06-20 10:05:00'),
+    (3, 10, 3, 'NAO_USADO', '2026-06-20 10:10:00'),
+    (4, 20, 4, 'FREQUENTE', '2026-06-20 10:15:00'),
+    (5, 20, 5, 'RARO', '2026-06-20 10:20:00')
+ON CONFLICT (id) DO NOTHING;
+
 SELECT setval(
     pg_get_serial_sequence('streaming_services', 'id'),
     COALESCE((SELECT MAX(id) FROM streaming_services), 1)
@@ -89,4 +110,9 @@ SELECT setval(
 SELECT setval(
     pg_get_serial_sequence('payments', 'id'),
     COALESCE((SELECT MAX(id) FROM payments), 1)
+);
+
+SELECT setval(
+    pg_get_serial_sequence('subscription_usage', 'id'),
+    COALESCE((SELECT MAX(id) FROM subscription_usage), 1)
 );
