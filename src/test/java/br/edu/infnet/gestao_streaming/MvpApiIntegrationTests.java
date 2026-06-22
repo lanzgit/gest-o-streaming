@@ -471,4 +471,120 @@ class MvpApiIntegrationTests {
 						"""))
         .andExpect(status().isBadRequest());
   }
+
+  @Test
+  void userCanSeeConsolidatedDashboard() throws Exception {
+    mockMvc
+        .perform(
+            post("/streaming-services")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+						{
+						  "name": "Netflix",
+						  "category": "VIDEO"
+						}
+						"""))
+        .andExpect(status().isCreated());
+
+    mockMvc
+        .perform(
+            post("/streaming-services")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+						{
+						  "name": "Spotify",
+						  "category": "MUSIC"
+						}
+						"""))
+        .andExpect(status().isCreated());
+
+    mockMvc
+        .perform(
+            post("/users/55/subscriptions")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+						{
+						  "streamingServiceId": 1,
+						  "amount": 29.90,
+						  "billingCycle": "MENSAL",
+						  "billingDate": "2026-06-20"
+						}
+						"""))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.id").value(1));
+
+    mockMvc
+        .perform(
+            post("/users/55/subscriptions")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+						{
+						  "streamingServiceId": 2,
+						  "amount": 120.00,
+						  "billingCycle": "ANUAL",
+						  "billingDate": "2026-07-05"
+						}
+						"""))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.id").value(2));
+
+    mockMvc
+        .perform(
+            patch("/users/55/subscriptions/1/usage")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+						{
+						  "level": "NAO_USADO"
+						}
+						"""))
+        .andExpect(status().isOk());
+
+    mockMvc
+        .perform(
+            patch("/users/55/subscriptions/2/usage")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+						{
+						  "level": "FREQUENTE"
+						}
+						"""))
+        .andExpect(status().isOk());
+
+    mockMvc
+        .perform(
+            post("/users/55/subscriptions/1/payments")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+						{
+						  "amount": 29.90,
+						  "paidAt": "2026-06-20"
+						}
+						"""))
+        .andExpect(status().isCreated());
+
+    mockMvc.perform(post("/users/55/notifications/generate?days=20")).andExpect(status().isOk());
+
+    mockMvc
+        .perform(get("/users/55/dashboard?billingWindowDays=20&recentPaymentsLimit=3"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.userId").value(55))
+        .andExpect(jsonPath("$.expenses.monthlyTotal").value(39.90))
+        .andExpect(jsonPath("$.expenses.annualTotal").value(478.80))
+        .andExpect(jsonPath("$.activeSubscriptionsCount").value(2))
+        .andExpect(jsonPath("$.cancelledSubscriptionsCount").value(0))
+        .andExpect(jsonPath("$.lowUsageSubscriptionsCount").value(1))
+        .andExpect(jsonPath("$.unreadNotificationsCount").value(2))
+        .andExpect(jsonPath("$.usage.frequentCount").value(1))
+        .andExpect(jsonPath("$.usage.notUsedCount").value(1))
+        .andExpect(jsonPath("$.upcomingBillings", hasSize(2)))
+        .andExpect(jsonPath("$.recentPayments", hasSize(1)))
+        .andExpect(jsonPath("$.recentPayments[0].subscriptionId").value(1));
+  }
 }

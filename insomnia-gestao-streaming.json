@@ -68,6 +68,12 @@
       "name": "Uso"
     },
     {
+      "_id": "fld_dashboard",
+      "_type": "request_group",
+      "parentId": "wrk_gestao_streaming",
+      "name": "Dashboard"
+    },
+    {
       "_id": "fld_documentacao",
       "_type": "request_group",
       "parentId": "wrk_gestao_streaming",
@@ -284,6 +290,14 @@
       "name": "Resumo de uso",
       "method": "GET",
       "url": "{{ _.base_url }}/users/{{ _.user_id }}/subscriptions/usage-summary"
+    },
+    {
+      "_id": "req_dashboard_usuario",
+      "_type": "request",
+      "parentId": "fld_dashboard",
+      "name": "Consultar dashboard do usuario",
+      "method": "GET",
+      "url": "{{ _.base_url }}/users/{{ _.user_id }}/dashboard?billingWindowDays=7&recentPaymentsLimit=5"
     },
     {
       "_id": "req_openapi_json",

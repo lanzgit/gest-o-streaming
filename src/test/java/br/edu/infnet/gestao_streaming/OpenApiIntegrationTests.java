@@ -42,6 +42,7 @@ class OpenApiIntegrationTests {
             jsonPath("$.paths['/users/{userId}/subscriptions/{subscriptionId}/usage']").exists())
         .andExpect(jsonPath("$.paths['/users/{userId}/subscriptions/usage']").exists())
         .andExpect(jsonPath("$.paths['/users/{userId}/subscriptions/usage/low']").exists())
-        .andExpect(jsonPath("$.paths['/users/{userId}/subscriptions/usage-summary']").exists());
+        .andExpect(jsonPath("$.paths['/users/{userId}/subscriptions/usage-summary']").exists())
+        .andExpect(jsonPath("$.paths['/users/{userId}/dashboard']").exists());
   }
 }
