@@ -29,6 +29,12 @@ public class SubscriptionService {
     return subscriptions.findByUserIdOrderById(userId);
   }
 
+  public Subscription cancel(Long userId, Long subscriptionId) {
+    Subscription subscription = findUserSubscription(userId, subscriptionId);
+    subscription.cancel();
+    return subscriptions.save(subscription);
+  }
+
   private SubscriptionDraft toDraft(CreateSubscriptionCommand command) {
     return new SubscriptionDraft(
         command.userId(),
@@ -42,5 +48,18 @@ public class SubscriptionService {
     streamingServices
         .findById(streamingServiceId)
         .orElseThrow(() -> new IllegalArgumentException("Streaming service not found."));
+  }
+
+  private Subscription findUserSubscription(Long userId, Long subscriptionId) {
+    Subscription subscription =
+        subscriptions
+            .findById(subscriptionId)
+            .orElseThrow(() -> new IllegalArgumentException("Subscription not found."));
+
+    if (!subscription.userId().equals(userId)) {
+      throw new IllegalArgumentException("Subscription not found for user.");
+    }
+
+    return subscription;
   }
 }

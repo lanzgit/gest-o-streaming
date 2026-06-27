@@ -1,7 +1,7 @@
 {
   "_type": "export",
   "__export_format": 4,
-  "__export_date": "2026-06-14T00:00:00.000Z",
+  "__export_date": "2026-06-27T00:00:00.000Z",
   "__export_source": "codex",
   "resources": [
     {
@@ -166,6 +166,14 @@
       "name": "Listar assinaturas do usuario",
       "method": "GET",
       "url": "{{ _.base_url }}/users/{{ _.user_id }}/subscriptions"
+    },
+    {
+      "_id": "req_cancelar_assinatura",
+      "_type": "request",
+      "parentId": "fld_assinaturas",
+      "name": "Cancelar assinatura",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/users/{{ _.user_id }}/subscriptions/{{ _.netflix_subscription_id }}/cancel"
     },
     {
       "_id": "req_resumo_financeiro",
@@ -350,6 +358,14 @@
           "value": "application/json"
         }
       ]
+    },
+    {
+      "_id": "req_cancelar_assinatura_ja_cancelada",
+      "_type": "request",
+      "parentId": "fld_assinaturas",
+      "name": "Validacao: cancelar assinatura ja cancelada",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/users/{{ _.user_id }}/subscriptions/{{ _.netflix_subscription_id }}/cancel"
     }
   ]
 }

@@ -107,6 +107,106 @@ class MvpApiIntegrationTests {
   }
 
   @Test
+  void userCanCancelSubscriptionAndRemoveItFromExpensesAndUpcomingBilling() throws Exception {
+    mockMvc
+        .perform(
+            post("/streaming-services")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+						{
+						  "name": "Netflix",
+						  "category": "VIDEO"
+						}
+						"""))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.id").value(1));
+
+    mockMvc
+        .perform(
+            post("/users/10/subscriptions")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+						{
+						  "streamingServiceId": 1,
+						  "amount": 29.90,
+						  "billingCycle": "MENSAL",
+						  "billingDate": "2026-06-25"
+						}
+						"""))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.id").value(1))
+        .andExpect(jsonPath("$.status").value("ATIVA"));
+
+    mockMvc
+        .perform(patch("/users/10/subscriptions/1/cancel"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id").value(1))
+        .andExpect(jsonPath("$.status").value("CANCELADA"));
+
+    mockMvc
+        .perform(get("/users/10/subscriptions"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)))
+        .andExpect(jsonPath("$[0].status").value("CANCELADA"));
+
+    mockMvc
+        .perform(get("/users/10/expenses/summary"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.monthlyTotal").value(0))
+        .andExpect(jsonPath("$.annualTotal").value(0));
+
+    mockMvc
+        .perform(get("/users/10/billing/upcoming?days=7"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(0)));
+  }
+
+  @Test
+  void cannotCancelSubscriptionFromAnotherUserOrAlreadyCancelledSubscription() throws Exception {
+    mockMvc
+        .perform(
+            post("/streaming-services")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+						{
+						  "name": "Netflix",
+						  "category": "VIDEO"
+						}
+						"""))
+        .andExpect(status().isCreated());
+
+    mockMvc
+        .perform(
+            post("/users/10/subscriptions")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+						{
+						  "streamingServiceId": 1,
+						  "amount": 29.90,
+						  "billingCycle": "MENSAL",
+						  "billingDate": "2026-06-25"
+						}
+						"""))
+        .andExpect(status().isCreated());
+
+    mockMvc
+        .perform(patch("/users/99/subscriptions/1/cancel"))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.detail").value("Subscription not found for user."));
+
+    mockMvc.perform(patch("/users/10/subscriptions/1/cancel")).andExpect(status().isOk());
+
+    mockMvc
+        .perform(patch("/users/10/subscriptions/1/cancel"))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.detail").value("Subscription is already cancelled."));
+  }
+
+  @Test
   void serviceNameIsRequired() throws Exception {
     mockMvc
         .perform(

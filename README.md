@@ -1,6 +1,6 @@
 # Gestao Streaming
 
-API REST para gestao de assinaturas de streaming. O projeto ajuda o usuario a cadastrar assinaturas, acompanhar gastos, controlar vencimentos, registrar pagamentos simulados, classificar uso e consultar um dashboard consolidado.
+API REST para gestao de assinaturas de streaming. O projeto ajuda o usuario a cadastrar e cancelar assinaturas, acompanhar gastos, controlar vencimentos, registrar pagamentos simulados, classificar uso e consultar um dashboard consolidado.
 
 ## Objetivo
 
@@ -9,7 +9,7 @@ Dar visibilidade financeira sobre servicos recorrentes, como Netflix, Spotify, P
 ## Funcionalidades
 
 - Cadastro e listagem de servicos de streaming.
-- Cadastro e listagem de assinaturas por usuario.
+- Cadastro, listagem e cancelamento de assinaturas por usuario.
 - Calculo de gasto mensal e anual.
 - Consulta de proximos vencimentos.
 - Geracao e listagem de notificacoes simuladas.
@@ -49,11 +49,11 @@ src/main/java/br/edu/infnet/gestao_streaming
 |   `-- strategy    # Estrategias de calculo financeiro
 |-- dto             # Objetos de entrada e saida da API
 |-- external/tmdb   # Integracao com API externa TMDB
-|-- repository      # Contratos e implementacoes de persistencia
+|-- repository      # Interfaces Spring Data JPA de persistencia
 `-- service         # Casos de uso e regras de aplicacao
 ```
 
-A camada `controller` recebe requisicoes HTTP e converte respostas para DTOs. A camada `service` coordena casos de uso. O pacote `domain` concentra regras e objetos do dominio. A camada `repository` isola persistencia. A pasta `external/tmdb` isola a integracao com a API externa.
+A camada `controller` recebe requisicoes HTTP e converte respostas para DTOs. A camada `service` coordena casos de uso. O pacote `domain` concentra regras e objetos do dominio. A camada `repository` usa Spring Data JPA para persistencia. A pasta `external/tmdb` isola a integracao com a API externa.
 
 ## Como Subir Com Docker
 
@@ -117,6 +117,44 @@ OpenAPI JSON:
 ```text
 http://localhost:8080/v3/api-docs
 ```
+
+## Endpoints Principais
+
+- `POST /streaming-services`
+- `GET /streaming-services`
+- `POST /users/{userId}/subscriptions`
+- `GET /users/{userId}/subscriptions`
+- `PATCH /users/{userId}/subscriptions/{subscriptionId}/cancel`
+- `GET /users/{userId}/expenses/summary`
+- `GET /users/{userId}/billing/upcoming`
+- `POST /users/{userId}/notifications/generate`
+- `GET /users/{userId}/notifications`
+- `POST /users/{userId}/subscriptions/{subscriptionId}/payments`
+- `GET /users/{userId}/payments`
+- `PATCH /users/{userId}/subscriptions/{subscriptionId}/usage`
+- `GET /users/{userId}/dashboard`
+
+## Cancelamento De Assinatura
+
+```http
+PATCH http://localhost:8080/users/10/subscriptions/1/cancel
+```
+
+Resposta resumida:
+
+```json
+{
+  "id": 1,
+  "userId": 10,
+  "streamingServiceId": 1,
+  "amount": 29.90,
+  "billingCycle": "MENSAL",
+  "billingDate": "2026-06-25",
+  "status": "CANCELADA"
+}
+```
+
+Assinaturas canceladas continuam aparecendo na listagem do usuario, mas deixam de compor gastos ativos, proximos vencimentos e contagem de assinaturas ativas no dashboard.
 
 ## Exemplo De Dashboard
 
