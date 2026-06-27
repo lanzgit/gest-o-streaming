@@ -51,4 +51,11 @@ public class Subscription {
   public boolean isActive() {
     return status == SubscriptionStatus.ATIVA;
   }
+
+  public void cancel() {
+    if (!isActive()) {
+      throw new IllegalArgumentException("Subscription is already cancelled.");
+    }
+    status = SubscriptionStatus.CANCELADA;
+  }
 }

@@ -10,6 +10,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,5 +40,13 @@ class SubscriptionController {
       description = "Retorna as assinaturas cadastradas para um usuario.")
   List<SubscriptionResponse> list(@PathVariable Long userId) {
     return service.listByUser(userId).stream().map(SubscriptionResponse::from).toList();
+  }
+
+  @PatchMapping("/users/{userId}/subscriptions/{subscriptionId}/cancel")
+  @Operation(
+      summary = "Cancelar assinatura",
+      description = "Cancela uma assinatura ativa vinculada ao usuario.")
+  SubscriptionResponse cancel(@PathVariable Long userId, @PathVariable Long subscriptionId) {
+    return SubscriptionResponse.from(service.cancel(userId, subscriptionId));
   }
 }
