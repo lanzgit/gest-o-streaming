@@ -1,7 +1,7 @@
 package br.edu.infnet.gestao_streaming.service;
 
 import br.edu.infnet.gestao_streaming.domain.command.CreateSubscriptionCommand;
-import br.edu.infnet.gestao_streaming.domain.factory.SubscriptionFactory;
+import br.edu.infnet.gestao_streaming.domain.factory.SubscriptionCreator;
 import br.edu.infnet.gestao_streaming.domain.model.Subscription;
 import br.edu.infnet.gestao_streaming.domain.model.SubscriptionDraft;
 import br.edu.infnet.gestao_streaming.repository.StreamingServiceRepository;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class SubscriptionService {
 
   private final StreamingServiceRepository streamingServices;
-  private final SubscriptionFactory factory;
+  private final SubscriptionCreator factory;
   private final SubscriptionRepository subscriptions;
 
   public Subscription create(CreateSubscriptionCommand command) {
@@ -26,7 +26,7 @@ public class SubscriptionService {
   }
 
   public List<Subscription> listByUser(Long userId) {
-    return subscriptions.findByUserId(userId);
+    return subscriptions.findByUserIdOrderById(userId);
   }
 
   private SubscriptionDraft toDraft(CreateSubscriptionCommand command) {

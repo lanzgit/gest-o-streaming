@@ -1,14 +1,6 @@
 package br.edu.infnet.gestao_streaming.repository;
 
 import br.edu.infnet.gestao_streaming.domain.model.StreamingService;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface StreamingServiceRepository {
-
-  StreamingService save(StreamingService streamingService);
-
-  List<StreamingService> findAll();
-
-  Optional<StreamingService> findById(Long id);
-}
+public interface StreamingServiceRepository extends JpaRepository<StreamingService, Long> {}

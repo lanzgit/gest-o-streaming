@@ -25,7 +25,7 @@ public class BillingService {
     LocalDate today = LocalDate.now(clock);
     LocalDate limit = today.plusDays(resolveWindow(days));
 
-    return subscriptions.findByUserId(userId).stream()
+    return subscriptions.findByUserIdOrderById(userId).stream()
         .filter(Subscription::isActive)
         .map(subscription -> toUpcomingBilling(subscription, today))
         .filter(upcomingBilling -> !upcomingBilling.dueDate().isAfter(limit))

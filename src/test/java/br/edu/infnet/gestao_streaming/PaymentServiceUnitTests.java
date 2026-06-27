@@ -17,16 +17,12 @@ import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 class PaymentServiceUnitTests {
 
-  private final FakePaymentRepository payments = new FakePaymentRepository();
-  private final FakeSubscriptionRepository subscriptions = new FakeSubscriptionRepository();
+  private final PaymentRepository payments = RepositoryTestDoubles.payments();
+  private final SubscriptionRepository subscriptions = RepositoryTestDoubles.subscriptions();
   private final PaymentService service =
       new PaymentService(
           payments,
@@ -83,68 +79,5 @@ class PaymentServiceUnitTests {
         BillingCycle.MENSAL,
         LocalDate.of(2026, 6, 20),
         SubscriptionStatus.ATIVA);
-  }
-
-  private static class FakePaymentRepository implements PaymentRepository {
-
-    private final List<Payment> payments = new ArrayList<>();
-    private long sequence;
-
-    @Override
-    public Payment save(Payment payment) {
-      Payment savedPayment =
-          new Payment(
-              ++sequence,
-              payment.userId(),
-              payment.subscriptionId(),
-              payment.amount(),
-              payment.paidAt(),
-              payment.status(),
-              payment.createdAt());
-      payments.add(savedPayment);
-      return savedPayment;
-    }
-
-    @Override
-    public List<Payment> findByUserId(Long userId) {
-      return payments.stream()
-          .filter(payment -> payment.userId().equals(userId))
-          .sorted(Comparator.comparing(Payment::paidAt).thenComparing(Payment::id))
-          .toList();
-    }
-
-    @Override
-    public List<Payment> findByUserIdAndSubscriptionId(Long userId, Long subscriptionId) {
-      return payments.stream()
-          .filter(payment -> payment.userId().equals(userId))
-          .filter(payment -> payment.subscriptionId().equals(subscriptionId))
-          .sorted(Comparator.comparing(Payment::paidAt).thenComparing(Payment::id))
-          .toList();
-    }
-  }
-
-  private static class FakeSubscriptionRepository implements SubscriptionRepository {
-
-    private final List<Subscription> subscriptions = new ArrayList<>();
-
-    @Override
-    public Subscription save(Subscription subscription) {
-      subscriptions.add(subscription);
-      return subscription;
-    }
-
-    @Override
-    public List<Subscription> findByUserId(Long userId) {
-      return subscriptions.stream()
-          .filter(subscription -> subscription.userId().equals(userId))
-          .toList();
-    }
-
-    @Override
-    public Optional<Subscription> findById(Long id) {
-      return subscriptions.stream()
-          .filter(subscription -> subscription.id().equals(id))
-          .findFirst();
-    }
   }
 }

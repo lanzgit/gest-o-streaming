@@ -6,11 +6,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import br.edu.infnet.gestao_streaming.config.TmdbProperties;
 import br.edu.infnet.gestao_streaming.dto.ExternalMovieSearchResponse;
 import br.edu.infnet.gestao_streaming.dto.ExternalStreamingProviderResponse;
-import br.edu.infnet.gestao_streaming.external.tmdb.TmdbCatalogGateway;
-import br.edu.infnet.gestao_streaming.external.tmdb.TmdbMovieListResponse;
-import br.edu.infnet.gestao_streaming.external.tmdb.TmdbMovieListResponse.TmdbMovieResponse;
-import br.edu.infnet.gestao_streaming.external.tmdb.TmdbProviderListResponse;
-import br.edu.infnet.gestao_streaming.external.tmdb.TmdbProviderListResponse.TmdbProviderResponse;
+import br.edu.infnet.gestao_streaming.external.CatalogProviderGateway;
+import br.edu.infnet.gestao_streaming.external.model.ExternalMovie;
+import br.edu.infnet.gestao_streaming.external.model.ExternalMovieCatalog;
+import br.edu.infnet.gestao_streaming.external.model.ExternalStreamingProvider;
 import br.edu.infnet.gestao_streaming.service.ExternalCatalogService;
 import java.time.LocalDate;
 import java.util.List;
@@ -18,15 +17,17 @@ import org.junit.jupiter.api.Test;
 
 class ExternalCatalogServiceTests {
 
-  private final FakeTmdbCatalogGateway tmdbClient = new FakeTmdbCatalogGateway();
+  private final FakeCatalogProviderGateway catalogProvider = new FakeCatalogProviderGateway();
   private final TmdbProperties properties = tmdbProperties();
-  private final ExternalCatalogService service = new ExternalCatalogService(tmdbClient, properties);
+  private final ExternalCatalogService service =
+      new ExternalCatalogService(catalogProvider, properties);
 
   @Test
   void listsMovieProvidersUsingDefaultRegion() {
-    tmdbClient.providerListResponse =
-        new TmdbProviderListResponse(
-            List.of(new TmdbProviderResponse(8, "Netflix", "/netflix.png", 1)));
+    catalogProvider.providers =
+        List.of(
+            new ExternalStreamingProvider(
+                8, "Netflix", "https://image.tmdb.org/t/p/w500/netflix.png", 1));
 
     List<ExternalStreamingProviderResponse> providers = service.listMovieProviders(null);
 
@@ -35,25 +36,25 @@ class ExternalCatalogServiceTests {
     assertThat(providers.getFirst().providerName()).isEqualTo("Netflix");
     assertThat(providers.getFirst().logoUrl())
         .isEqualTo("https://image.tmdb.org/t/p/w500/netflix.png");
-    assertThat(tmdbClient.lastProviderRegion).isEqualTo("BR");
+    assertThat(catalogProvider.lastProviderRegion).isEqualTo("BR");
   }
 
   @Test
   void discoversMoviesByProviderUsingRequestedRegion() {
-    tmdbClient.movieListResponse =
-        new TmdbMovieListResponse(
+    catalogProvider.movieCatalog =
+        new ExternalMovieCatalog(
             1,
+            10,
+            200,
             List.of(
-                new TmdbMovieResponse(
+                new ExternalMovie(
                     550,
                     "Fight Club",
                     "Overview",
-                    "/poster.jpg",
+                    "https://image.tmdb.org/t/p/w500/poster.jpg",
                     LocalDate.of(1999, 10, 15),
                     8.4,
-                    90.0)),
-            10,
-            200);
+                    90.0)));
 
     ExternalMovieSearchResponse response = service.discoverMoviesByProvider(337, "us");
 
@@ -63,8 +64,8 @@ class ExternalCatalogServiceTests {
     assertThat(response.movies()).hasSize(1);
     assertThat(response.movies().getFirst().posterUrl())
         .isEqualTo("https://image.tmdb.org/t/p/w500/poster.jpg");
-    assertThat(tmdbClient.lastMovieProviderId).isEqualTo(337);
-    assertThat(tmdbClient.lastMovieRegion).isEqualTo("US");
+    assertThat(catalogProvider.lastMovieProviderId).isEqualTo(337);
+    assertThat(catalogProvider.lastMovieRegion).isEqualTo("US");
   }
 
   @Test
@@ -83,25 +84,25 @@ class ExternalCatalogServiceTests {
     return properties;
   }
 
-  private static class FakeTmdbCatalogGateway implements TmdbCatalogGateway {
+  private static class FakeCatalogProviderGateway implements CatalogProviderGateway {
 
-    private TmdbProviderListResponse providerListResponse;
-    private TmdbMovieListResponse movieListResponse;
+    private List<ExternalStreamingProvider> providers = List.of();
+    private ExternalMovieCatalog movieCatalog;
     private String lastProviderRegion;
     private Integer lastMovieProviderId;
     private String lastMovieRegion;
 
     @Override
-    public TmdbProviderListResponse listMovieProviders(String region) {
+    public List<ExternalStreamingProvider> listMovieProviders(String region) {
       lastProviderRegion = region;
-      return providerListResponse;
+      return providers;
     }
 
     @Override
-    public TmdbMovieListResponse discoverMoviesByProvider(Integer providerId, String region) {
+    public ExternalMovieCatalog discoverMoviesByProvider(Integer providerId, String region) {
       lastMovieProviderId = providerId;
       lastMovieRegion = region;
-      return movieListResponse;
+      return movieCatalog;
     }
   }
 }

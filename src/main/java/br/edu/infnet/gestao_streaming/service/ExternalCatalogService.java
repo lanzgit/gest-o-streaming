@@ -3,7 +3,7 @@ package br.edu.infnet.gestao_streaming.service;
 import br.edu.infnet.gestao_streaming.config.TmdbProperties;
 import br.edu.infnet.gestao_streaming.dto.ExternalMovieSearchResponse;
 import br.edu.infnet.gestao_streaming.dto.ExternalStreamingProviderResponse;
-import br.edu.infnet.gestao_streaming.external.tmdb.TmdbCatalogGateway;
+import br.edu.infnet.gestao_streaming.external.CatalogProviderGateway;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,12 +13,12 @@ import org.springframework.util.StringUtils;
 @RequiredArgsConstructor
 public class ExternalCatalogService {
 
-  private final TmdbCatalogGateway tmdbClient;
+  private final CatalogProviderGateway catalogProvider;
   private final TmdbProperties properties;
 
   public List<ExternalStreamingProviderResponse> listMovieProviders(String region) {
     String resolvedRegion = resolveRegion(region);
-    return tmdbClient.listMovieProviders(resolvedRegion).results().stream()
+    return catalogProvider.listMovieProviders(resolvedRegion).stream()
         .map(ExternalStreamingProviderResponse::from)
         .toList();
   }
@@ -30,7 +30,7 @@ public class ExternalCatalogService {
 
     String resolvedRegion = resolveRegion(region);
     return ExternalMovieSearchResponse.from(
-        tmdbClient.discoverMoviesByProvider(providerId, resolvedRegion));
+        catalogProvider.discoverMoviesByProvider(providerId, resolvedRegion));
   }
 
   private String resolveRegion(String region) {

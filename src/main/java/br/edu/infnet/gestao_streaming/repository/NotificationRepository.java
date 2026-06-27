@@ -4,12 +4,11 @@ import br.edu.infnet.gestao_streaming.domain.model.Notification;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface NotificationRepository {
+public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
-  Notification save(Notification notification);
-
-  List<Notification> findByUserId(Long userId);
+  List<Notification> findByUserIdOrderByCreatedAtAscIdAsc(Long userId);
 
   Optional<Notification> findBySubscriptionIdAndDueDate(Long subscriptionId, LocalDate dueDate);
 }

@@ -17,7 +17,7 @@ public class FinanceService {
   private final ExpenseCalculator calculator;
 
   public ExpenseSummary summarize(Long userId) {
-    List<Subscription> userSubscriptions = subscriptions.findByUserId(userId);
+    List<Subscription> userSubscriptions = subscriptions.findByUserIdOrderById(userId);
     return new ExpenseSummary(
         userId,
         scale(calculator.monthlyTotal(userSubscriptions)),

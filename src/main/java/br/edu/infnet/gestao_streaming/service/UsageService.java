@@ -35,17 +35,17 @@ public class UsageService {
   }
 
   public List<Usage> listByUser(Long userId) {
-    return usageRepository.findByUserId(userId);
+    return usageRepository.findByUserIdOrderBySubscriptionIdAsc(userId);
   }
 
   public List<Usage> listLowUsage(Long userId) {
-    return usageRepository.findByUserId(userId).stream()
+    return usageRepository.findByUserIdOrderBySubscriptionIdAsc(userId).stream()
         .filter(usage -> usage.level() == UsageLevel.RARO || usage.level() == UsageLevel.NAO_USADO)
         .toList();
   }
 
   public UsageSummary summarize(Long userId) {
-    List<Usage> entries = usageRepository.findByUserId(userId);
+    List<Usage> entries = usageRepository.findByUserIdOrderBySubscriptionIdAsc(userId);
     return new UsageSummary(
         count(entries, UsageLevel.FREQUENTE),
         count(entries, UsageLevel.RARO),

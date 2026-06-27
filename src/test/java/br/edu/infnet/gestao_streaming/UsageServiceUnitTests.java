@@ -17,16 +17,12 @@ import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 class UsageServiceUnitTests {
 
-  private final FakeUsageRepository usageRepository = new FakeUsageRepository();
-  private final FakeSubscriptionRepository subscriptions = new FakeSubscriptionRepository();
+  private final UsageRepository usageRepository = RepositoryTestDoubles.usage();
+  private final SubscriptionRepository subscriptions = RepositoryTestDoubles.subscriptions();
   private final UsageService service =
       new UsageService(
           usageRepository,
@@ -72,73 +68,5 @@ class UsageServiceUnitTests {
         BillingCycle.MENSAL,
         LocalDate.of(2026, 6, 20),
         SubscriptionStatus.ATIVA);
-  }
-
-  private static class FakeUsageRepository implements UsageRepository {
-
-    private final List<Usage> entries = new ArrayList<>();
-    private long sequence;
-
-    @Override
-    public Usage save(Usage usage) {
-      Usage savedUsage =
-          new Usage(
-              resolveId(usage),
-              usage.userId(),
-              usage.subscriptionId(),
-              usage.level(),
-              usage.updatedAt());
-      entries.removeIf(entry -> entry.id().equals(savedUsage.id()));
-      entries.add(savedUsage);
-      return savedUsage;
-    }
-
-    @Override
-    public List<Usage> findByUserId(Long userId) {
-      return entries.stream()
-          .filter(usage -> usage.userId().equals(userId))
-          .sorted(Comparator.comparing(Usage::subscriptionId))
-          .toList();
-    }
-
-    @Override
-    public Optional<Usage> findByUserIdAndSubscriptionId(Long userId, Long subscriptionId) {
-      return entries.stream()
-          .filter(usage -> usage.userId().equals(userId))
-          .filter(usage -> usage.subscriptionId().equals(subscriptionId))
-          .findFirst();
-    }
-
-    private Long resolveId(Usage usage) {
-      if (usage.id() != null) {
-        return usage.id();
-      }
-      return ++sequence;
-    }
-  }
-
-  private static class FakeSubscriptionRepository implements SubscriptionRepository {
-
-    private final List<Subscription> subscriptions = new ArrayList<>();
-
-    @Override
-    public Subscription save(Subscription subscription) {
-      subscriptions.add(subscription);
-      return subscription;
-    }
-
-    @Override
-    public List<Subscription> findByUserId(Long userId) {
-      return subscriptions.stream()
-          .filter(subscription -> subscription.userId().equals(userId))
-          .toList();
-    }
-
-    @Override
-    public Optional<Subscription> findById(Long id) {
-      return subscriptions.stream()
-          .filter(subscription -> subscription.id().equals(id))
-          .findFirst();
-    }
   }
 }

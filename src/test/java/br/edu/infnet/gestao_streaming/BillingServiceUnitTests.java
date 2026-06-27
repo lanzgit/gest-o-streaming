@@ -14,14 +14,12 @@ import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 class BillingServiceUnitTests {
 
-  private final FakeSubscriptionRepository subscriptions = new FakeSubscriptionRepository();
+  private final SubscriptionRepository subscriptions = RepositoryTestDoubles.subscriptions();
   private final BillingService service =
       new BillingService(
           subscriptions, Clock.fixed(Instant.parse("2026-06-20T00:00:00Z"), ZoneId.of("UTC")));
@@ -56,30 +54,5 @@ class BillingServiceUnitTests {
       Long id, BillingCycle billingCycle, LocalDate billingDate, SubscriptionStatus status) {
     return new Subscription(
         id, 10L, 1L, BigDecimal.valueOf(29.90), billingCycle, billingDate, status);
-  }
-
-  private static class FakeSubscriptionRepository implements SubscriptionRepository {
-
-    private final List<Subscription> subscriptions = new ArrayList<>();
-
-    @Override
-    public Subscription save(Subscription subscription) {
-      subscriptions.add(subscription);
-      return subscription;
-    }
-
-    @Override
-    public List<Subscription> findByUserId(Long userId) {
-      return subscriptions.stream()
-          .filter(subscription -> subscription.userId().equals(userId))
-          .toList();
-    }
-
-    @Override
-    public Optional<Subscription> findById(Long id) {
-      return subscriptions.stream()
-          .filter(subscription -> subscription.id().equals(id))
-          .findFirst();
-    }
   }
 }
