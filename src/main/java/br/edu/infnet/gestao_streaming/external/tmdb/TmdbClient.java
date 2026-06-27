@@ -7,7 +7,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestClient;
 
 @Component
-public class TmdbClient implements TmdbCatalogGateway {
+public class TmdbClient implements TmdbApiClient {
 
   private final TmdbProperties properties;
   private final RestClient restClient;

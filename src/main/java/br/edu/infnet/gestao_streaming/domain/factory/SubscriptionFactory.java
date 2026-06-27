@@ -6,9 +6,14 @@ import br.edu.infnet.gestao_streaming.domain.model.SubscriptionStatus;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SubscriptionFactory {
+public class SubscriptionFactory implements SubscriptionCreator {
 
+  @Override
   public Subscription create(SubscriptionDraft draft) {
+    if (draft == null) {
+      throw new IllegalArgumentException("Subscription draft is required.");
+    }
+
     validate(draft);
     return new Subscription(
         null,

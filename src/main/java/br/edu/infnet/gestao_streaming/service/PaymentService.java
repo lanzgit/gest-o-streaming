@@ -39,12 +39,12 @@ public class PaymentService {
   }
 
   public List<Payment> listByUser(Long userId) {
-    return payments.findByUserId(userId);
+    return payments.findByUserIdOrderByPaidAtAscIdAsc(userId);
   }
 
   public List<Payment> listBySubscription(Long userId, Long subscriptionId) {
     findUserSubscription(userId, subscriptionId);
-    return payments.findByUserIdAndSubscriptionId(userId, subscriptionId);
+    return payments.findByUserIdAndSubscriptionIdOrderByPaidAtAscIdAsc(userId, subscriptionId);
   }
 
   private Subscription findUserSubscription(Long userId, Long subscriptionId) {

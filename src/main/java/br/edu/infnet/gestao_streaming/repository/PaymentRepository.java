@@ -2,12 +2,12 @@ package br.edu.infnet.gestao_streaming.repository;
 
 import br.edu.infnet.gestao_streaming.domain.model.Payment;
 import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PaymentRepository {
+public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
-  Payment save(Payment payment);
+  List<Payment> findByUserIdOrderByPaidAtAscIdAsc(Long userId);
 
-  List<Payment> findByUserId(Long userId);
-
-  List<Payment> findByUserIdAndSubscriptionId(Long userId, Long subscriptionId);
+  List<Payment> findByUserIdAndSubscriptionIdOrderByPaidAtAscIdAsc(
+      Long userId, Long subscriptionId);
 }

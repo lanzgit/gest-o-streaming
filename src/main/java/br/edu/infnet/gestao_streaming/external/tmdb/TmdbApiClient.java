@@ -1,6 +1,6 @@
 package br.edu.infnet.gestao_streaming.external.tmdb;
 
-public interface TmdbCatalogGateway {
+public interface TmdbApiClient {
 
   TmdbProviderListResponse listMovieProviders(String region);
 

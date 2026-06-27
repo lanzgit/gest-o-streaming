@@ -23,7 +23,7 @@ public class NotificationService {
   }
 
   public List<Notification> listByUser(Long userId) {
-    return notifications.findByUserId(userId);
+    return notifications.findByUserIdOrderByCreatedAtAscIdAsc(userId);
   }
 
   private Notification findOrCreate(UpcomingBilling billing) {
